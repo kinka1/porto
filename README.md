@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio
 
-## Getting Started
+Personal software-developer portfolio built with Next.js 15 (App Router), React 19, TypeScript, and Tailwind CSS. Fully static, available in English and Indonesian — no backend, no runtime dependencies beyond Next and React.
 
-First, run the development server:
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build + type check
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Languages
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The site is published in English (`/en/…`) and Indonesian (`/id/…`); visiting `/` or any unprefixed path redirects to English. A switcher in the navbar moves between them without leaving the current page.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Content** — every piece of prose in `src/data/` is written as `{ en: "…", id: "…" }`. Names (people, companies, schools, products) and technology names stay single strings.
+- **Interface text** — buttons, headings, and labels live in `src/i18n/dictionary.ts`. The Indonesian dictionary is type-checked against the English one, so a forgotten translation fails the build rather than silently falling back.
 
-## Learn More
+## Editing content
 
-To learn more about Next.js, take a look at the following resources:
+All content lives in `src/data/` — no JSX changes are needed to update the site:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| File                | What it controls                                              |
+| ------------------- | ------------------------------------------------------------- |
+| `site.ts`           | Name, role, statement, site URL, email, socials, CV link      |
+| `projects.ts`       | Projects — powers the home page, `/projects`, and case studies |
+| `about.ts`          | About section copy and focus areas                            |
+| `skills.ts`         | Skill groups                                                  |
+| `experience.ts`     | Experience timeline                                           |
+| `education.ts`      | Education                                                     |
+| `certifications.ts` | Certifications                                                |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Fields marked `TODO:` are placeholders and render as-is — replace them with real information. Leave `results` empty rather than inventing metrics; sections with an empty data array are hidden automatically.
 
-## Deploy on Vercel
+### Adding a project
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Append an object to the `projects` array in `src/data/projects.ts` (see the `Project` type in `src/lib/types.ts`). Case-study pages are generated at `/en/projects/<slug>` and `/id/projects/<slug>`, and both are added to the sitemap. Put screenshots in `public/projects/<slug>/` and reference them from `screenshots` / `thumbnail`. Omit `githubUrl` for private repositories; for a project split across several repos, use `repositories: [{ label, url }]` instead.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Before deploying
+
+1. Set `site.url` to the production domain (used for canonical URLs, Open Graph, sitemap, robots).
+2. Set `site.email` and the social links.
+3. Optionally add `public/cv.pdf` and set `site.cvUrl`.
