@@ -13,8 +13,8 @@ export const certifications: Certification[] = [
       id: "Badan Nasional Sertifikasi Profesi (BNSP)",
     },
     date: {
-      en: "Nov 2025 — Nov 2026",
-      id: "Nov 2025 — Nov 2026",
+      en: "Nov 2025",
+      id: "Nov 2025",
     },
     credentialUrl: undefined, // TODO: add a credential link if one exists
   },
